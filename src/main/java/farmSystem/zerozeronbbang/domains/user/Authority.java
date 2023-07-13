@@ -1,4 +1,4 @@
-package farmSystem.zerozeronbbang.domain.user;
+package farmSystem.zerozeronbbang.domains.user;
 
 import lombok.*;
 

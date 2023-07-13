@@ -1,10 +1,4 @@
-package farmSystem.zerozeronbbang.domain;
-
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-
-import javax.persistence.*;
+package farmSystem.zerozeronbbang.domains;
 
 //@Entity
 //@Getter

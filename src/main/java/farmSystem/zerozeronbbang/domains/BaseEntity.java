@@ -1,4 +1,4 @@
-package farmSystem.zerozeronbbang.domain;
+package farmSystem.zerozeronbbang.domains;
 
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
