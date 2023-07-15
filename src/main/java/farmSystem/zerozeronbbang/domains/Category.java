@@ -1,4 +1,4 @@
-package farmSystem.zerozeronbbang.domain;
+package farmSystem.zerozeronbbang.domains;
 
 import lombok.AccessLevel;
 import lombok.Builder;

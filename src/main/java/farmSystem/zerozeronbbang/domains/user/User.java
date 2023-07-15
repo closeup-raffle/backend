@@ -1,7 +1,7 @@
-package farmSystem.zerozeronbbang.domain.user;
+package farmSystem.zerozeronbbang.domains.user;
 
 import com.sun.istack.NotNull;
-import farmSystem.zerozeronbbang.domain.*;
+import farmSystem.zerozeronbbang.domains.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;

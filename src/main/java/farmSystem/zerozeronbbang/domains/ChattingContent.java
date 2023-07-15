@@ -1,21 +1,27 @@
-package farmSystem.zerozeronbbang.domain;
+package farmSystem.zerozeronbbang.domains;
 
-import farmSystem.zerozeronbbang.domain.user.User;
+import farmSystem.zerozeronbbang.domains.user.User;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class User_ChattingRoom {
+public class ChattingContent {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_chattingRoom_id")
+    @Column(name = "chattingContent_id")
     private Long id;
+
+    private String content;
+
+    private LocalDateTime sendTime;
 
     //회원 다대일 양방향
     @ManyToOne(fetch = FetchType.LAZY)
@@ -27,15 +33,21 @@ public class User_ChattingRoom {
     @JoinColumn(name = "chattingRoom_id")
     private ChattingRoom chattingRoom;
 
-    //연관관계 메서드 User-User_ChattingRoom
-    public void setUser(User user){
-        this.user=user;
-        user.getUser_chattingRooms().add(this);
+    @Builder
+    public ChattingContent(String content){
+        this.content=content;
+        this.sendTime=LocalDateTime.now();
     }
 
-    //연관관계 메서드 ChattingRoom-User_ChattingRoom
+    //연관관계 메서드 User-ChattingContent
+    public void setUser(User user){
+        this.user=user;
+        user.getChattingContents().add(this);
+    }
+
+    //연관관계 메서드 ChattingRoom-ChattingContent
     public void setChattingRoom(ChattingRoom chattingRoom){
-        this.chattingRoom = chattingRoom;
-        chattingRoom.getUser_chattingRooms().add(this);
+        this.chattingRoom=chattingRoom;
+        chattingRoom.getChattingContents().add(this);
     }
 }

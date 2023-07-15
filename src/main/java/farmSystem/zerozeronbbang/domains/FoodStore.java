@@ -1,6 +1,6 @@
-package farmSystem.zerozeronbbang.domain;
+package farmSystem.zerozeronbbang.domains;
 
-import farmSystem.zerozeronbbang.domain.user.Address;
+import farmSystem.zerozeronbbang.domains.user.Address;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
