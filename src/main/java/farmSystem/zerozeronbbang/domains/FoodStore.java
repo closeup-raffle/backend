@@ -1,6 +1,6 @@
 package farmSystem.zerozeronbbang.domains;
 
-import farmSystem.zerozeronbbang.domains.user.Address;
+import farmSystem.zerozeronbbang.domains.category.Category;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -21,13 +21,16 @@ public class FoodStore {
     private Long id;
 
     private String name;
-    private Address address;
+    private String address1;
+    private String address2;
+    private String address3;
     private String phone;
-    private String minDeliveryPrice;
+    private int minDeliveryPrice;
     private String closedDays;
     private String operationHours;
     private String storePictureUrl;
     private int deliveryTip;
+    private int deliveryTime;
 
     //메뉴 일대다 양방향
     @OneToMany(mappedBy = "foodStore", cascade = CascadeType.ALL)
@@ -39,15 +42,18 @@ public class FoodStore {
     private Category category;
 
     @Builder
-    public FoodStore(String name, Address address, String phone, String minDeliveryPrice, String closedDays, String operationHours, String storePictureUrl, int deliveryTip){
+    public FoodStore(String name, String address1, String address2, String address3, String phone, int minDeliveryPrice, String closedDays, String operationHours, String storePictureUrl, int deliveryTip, int deliveryTime){
         this.name = name;
-        this.address = address;
+        this.address1 = address1;
+        this.address2 = address2;
+        this.address3 = address3;
         this.phone = phone;
         this.minDeliveryPrice = minDeliveryPrice;
         this.closedDays = closedDays;
         this.operationHours = operationHours;
         this.storePictureUrl = storePictureUrl;
         this.deliveryTip = deliveryTip;
+        this.deliveryTime = deliveryTime;
     }
 
     //연관관계 메서드 Category-FoodStore
