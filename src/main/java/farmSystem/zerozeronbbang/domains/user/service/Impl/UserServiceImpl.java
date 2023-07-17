@@ -54,7 +54,9 @@ public class UserServiceImpl implements UserService {
                 .email(user.getEmail())
                 .name(user.getName())
                 .phone(user.getPhone())
-                .address(user.getAddress())
+                .address1(user.getAddress1())
+                .address2(user.getAddress2())
+                .address3(user.getAddress3())
                 .token(token)
                 .build();
     }
@@ -72,6 +74,9 @@ public class UserServiceImpl implements UserService {
                 .password(password)
                 .name(reqSignUpDto.getName())
                 .phone(reqSignUpDto.getPhone())
+                .address1(reqSignUpDto.getAddress1())
+                .address2(reqSignUpDto.getAddress2())
+                .address3(reqSignUpDto.getAddress3())
                 .build();
         userRepository.save(user);
         return reqSignUpDto;
