@@ -8,6 +8,14 @@ public enum ResCodeEnum {
     USER_LOGIN_FAIL("Login Fail"),
     USER_SIGNUP_SUCCESS("User Signup Success"),
     USER_FIND_SUCCESS("Get User Success "),
+
+    // 카테고리
+    CATEGORY_LOAD_SUCCESS("Get Categories Success"),
+
+
+    // 주문 공고
+    ORDERBOARD_LOAD_SUCCESS("Get OrderBoards Success"),
+    ORDERBOARD_WRITE_SUCCESS("Write OrderBoard Success")
     ;
 
     private String message;
