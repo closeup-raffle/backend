@@ -27,7 +27,7 @@ public class Order_Menu {
     private Menu menu;
 
     //연관관계 메서드 Order-Order_Menu
-    public void setUser(Order order){
+    public void setOrder(Order order){
         this.order = order;
         order.getOrder_menus().add(this);
     }
