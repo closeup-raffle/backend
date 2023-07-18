@@ -1,5 +1,6 @@
 package farmSystem.zerozeronbbang.domains;
 
+import farmSystem.zerozeronbbang.domains.orderBoard.OrderBoard;
 import farmSystem.zerozeronbbang.domains.user.User;
 import lombok.AccessLevel;
 import lombok.Builder;

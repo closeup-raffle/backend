@@ -1,5 +1,6 @@
 package farmSystem.zerozeronbbang.domains;
 
+import farmSystem.zerozeronbbang.domains.menu.Menu;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
