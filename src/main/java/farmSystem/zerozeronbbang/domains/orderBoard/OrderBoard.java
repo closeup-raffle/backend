@@ -3,7 +3,7 @@ package farmSystem.zerozeronbbang.domains.orderBoard;
 import com.sun.istack.NotNull;
 import farmSystem.zerozeronbbang.domains.BaseEntity;
 import farmSystem.zerozeronbbang.domains.ChattingRoom;
-import farmSystem.zerozeronbbang.domains.FoodStore;
+import farmSystem.zerozeronbbang.domains.foodStore.FoodStore;
 import farmSystem.zerozeronbbang.domains.Order;
 import farmSystem.zerozeronbbang.domains.user.User;
 import lombok.AccessLevel;
@@ -24,6 +24,8 @@ public class OrderBoard extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "orderBoard_id")
     private Long id;
+    private String title;
+
 
     @NotNull
     private String endTime;
@@ -60,7 +62,7 @@ public class OrderBoard extends BaseEntity {
     private ChattingRoom chattingRoom;
 
     @Builder
-    public OrderBoard(String endTime, int numOfRecruit, String address1,String address2,String address3, boolean completed, String storeRequest, String riderRequest){
+    public OrderBoard(String endTime, int numOfRecruit, String address1,String address2,String address3, boolean completed, String storeRequest, String riderRequest, String title){
         this.endTime = endTime;
         this.numOfRecruit = numOfRecruit;
         this.address1 = address1;
@@ -69,6 +71,7 @@ public class OrderBoard extends BaseEntity {
         this.completed = completed;
         this.storeRequest = storeRequest;
         this.riderRequest = riderRequest;
+        this.title = title;
     }
 
     // 연관관계 메서드 User-OrderBoard
