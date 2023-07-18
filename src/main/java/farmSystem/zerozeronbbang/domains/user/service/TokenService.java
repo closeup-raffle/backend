@@ -1,9 +1,10 @@
 package farmSystem.zerozeronbbang.domains.user.service;
 
+import farmSystem.zerozeronbbang.domains.user.User;
 import org.springframework.security.core.Authentication;
 
 public interface TokenService {
-    String createAccessToken(final String payload);
+    String createAccessToken(User user);
     String createRefreshToken();
     String getPayload(final String token);
     boolean validateToken(final String token);
