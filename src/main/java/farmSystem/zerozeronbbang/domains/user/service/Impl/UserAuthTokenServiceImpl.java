@@ -1,5 +1,7 @@
 package farmSystem.zerozeronbbang.domains.user.service.Impl;
 
+import farmSystem.zerozeronbbang.domains.user.Address;
+import farmSystem.zerozeronbbang.domains.user.User;
 import farmSystem.zerozeronbbang.domains.user.service.TokenService;
 import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
@@ -8,7 +10,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -31,12 +32,16 @@ public class UserAuthTokenServiceImpl implements TokenService {
     protected static final String AUTHORITIES_KEY = "sub";
 
     @Override
-    public String createAccessToken(String payload) {
+    public String createAccessToken(User user) {
         Date now = new Date();
         Date validity = new Date(now.getTime() + jwtExpirationTime);
 
         return Jwts.builder()
-                .setSubject(payload)
+                .claim("id", user.getId())
+                .claim("email", user.getEmail())
+                .claim("name", user.getName())
+                .claim("phone", user.getPhone())
+                .claim("address", user.getAddress())
                 .setIssuedAt(now)
                 .setExpiration(validity)
                 .signWith(SignatureAlgorithm.HS256, jwtSecret.getBytes(StandardCharsets.UTF_8))
@@ -60,10 +65,8 @@ public class UserAuthTokenServiceImpl implements TokenService {
 
     @Override
     public boolean validateToken(String token) {
-        System.out.println(token);
         try {
             Jwts.parserBuilder().setSigningKey(jwtSecret.getBytes(StandardCharsets.UTF_8)).build().parseClaimsJws(token);
-            System.out.println("2" + token);
             return true;
         } catch (SecurityException | MalformedJwtException e) {
 //          log.info("Invalid JWT Token", e);
@@ -92,12 +95,18 @@ public class UserAuthTokenServiceImpl implements TokenService {
                 .getBody();
 
         Collection<? extends GrantedAuthority> authorities =
-                Arrays.stream(claims.get(AUTHORITIES_KEY).toString().split(","))
+                Arrays.stream(claims.get("id").toString().split(","))
                         .map(SimpleGrantedAuthority::new)
                         .collect(Collectors.toList());
 
         // 디비를 거치지 않고 토큰에서 값을 꺼내 바로 시큐리티 유저 객체를 만들어 Authentication을 만들어 반환하기에 유저네임, 권한 외 정보는 알 수 없다.
-        User principal = new User(claims.getSubject(), "", authorities);
+        User principal = new User(
+                Long.valueOf(claims.get("id").toString()),
+                claims.get("email").toString(),
+                claims.get("name").toString(),
+                claims.get("phone").toString(),
+                (Address) claims.get("address")
+        );
 
         return new UsernamePasswordAuthenticationToken(principal, accessToken, authorities);
     }

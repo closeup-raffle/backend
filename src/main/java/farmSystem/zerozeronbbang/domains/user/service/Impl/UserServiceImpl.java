@@ -45,7 +45,7 @@ public class UserServiceImpl implements UserService {
         }
 
         RefreshToken refreshToken = new RefreshToken(userAuthTokenService.createRefreshToken(), user.getId());
-        AccessAndRefreshTokenDto token = new AccessAndRefreshTokenDto(userAuthTokenService.createAccessToken(email), refreshToken.getRefreshToken());
+        AccessAndRefreshTokenDto token = new AccessAndRefreshTokenDto(userAuthTokenService.createAccessToken(user), refreshToken.getRefreshToken());
         // Redis RefreshToken 저장
         refreshTokenRedisRepository.save(refreshToken);
 
