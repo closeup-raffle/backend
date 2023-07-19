@@ -1,7 +1,10 @@
-package farmSystem.zerozeronbbang.domains;
+package farmSystem.zerozeronbbang.domains.orderBoard;
 
 import com.sun.istack.NotNull;
-import farmSystem.zerozeronbbang.domains.user.Address;
+import farmSystem.zerozeronbbang.domains.BaseEntity;
+import farmSystem.zerozeronbbang.domains.ChattingRoom;
+import farmSystem.zerozeronbbang.domains.FoodStore;
+import farmSystem.zerozeronbbang.domains.Order;
 import farmSystem.zerozeronbbang.domains.user.User;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -15,7 +18,7 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class OrderBoard extends BaseEntity{
+public class OrderBoard extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,10 +31,15 @@ public class OrderBoard extends BaseEntity{
     @NotNull
     private int numOfRecruit;
 
-    @NotNull
-    private Address pickUpAddress;
-
+    //수령 위치
+    private String address1;
+    private String address2;
+    private String address3;
     private boolean completed;
+
+    private String storeRequest;
+
+    private String riderRequest;
 
     //회원 다대일 양방향
     @ManyToOne(fetch = FetchType.LAZY)
@@ -52,16 +60,24 @@ public class OrderBoard extends BaseEntity{
     private ChattingRoom chattingRoom;
 
     @Builder
-    public OrderBoard(String endTime, int numOfRecruit, Address pickUpAddress, boolean completed){
+    public OrderBoard(String endTime, int numOfRecruit, String address1,String address2,String address3, boolean completed, String storeRequest, String riderRequest){
         this.endTime = endTime;
         this.numOfRecruit = numOfRecruit;
-        this.pickUpAddress = pickUpAddress;
+        this.address1 = address1;
+        this.address2 = address2;
+        this.address3 = address3;
         this.completed = completed;
+        this.storeRequest = storeRequest;
+        this.riderRequest = riderRequest;
     }
 
     // 연관관계 메서드 User-OrderBoard
     public void setUser(User user){
         this.user = user;
         user.getOrderBoards().add(this);
+    }
+
+    public void setFoodStore(FoodStore foodStore){
+        this.foodStore=foodStore;
     }
 }

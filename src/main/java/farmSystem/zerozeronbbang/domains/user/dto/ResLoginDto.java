@@ -11,6 +11,8 @@ public class ResLoginDto {
     private Long id;
     private String name;
     private String phone;
-    private Address address;
+    private String address1;
+    private String address2;
+    private String address3;
     private AccessAndRefreshTokenDto token;
 }

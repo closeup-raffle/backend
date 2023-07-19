@@ -2,6 +2,7 @@ package farmSystem.zerozeronbbang.domains.user;
 
 import com.sun.istack.NotNull;
 import farmSystem.zerozeronbbang.domains.*;
+import farmSystem.zerozeronbbang.domains.orderBoard.OrderBoard;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -34,9 +35,16 @@ public class User extends BaseEntity {
     @NotNull
     private String phone;
 
-    @Embedded
     @NotNull
-    private Address address; //카카오 제공 도로명 주소 api 활용?(https://postcode.map.daum.net/guide)
+    private String address1; //우편번호
+    @NotNull
+    private String address2; //지번 혹은 도로명 주소
+    @NotNull
+    private String address3; //상세주소
+
+//    @Embedded
+//    @NotNull
+//    private Address address; //카카오 제공 도로명 주소 api 활용?(https://postcode.map.daum.net/guide)
 
     @ManyToMany
     @JoinTable(
@@ -66,12 +74,14 @@ public class User extends BaseEntity {
     private List<ChattingContent> chattingContents = new ArrayList<>();
 
     @Builder
-    public User(String email, String password, String name, String phone, Address address) {
+    public User(String email, String password, String name, String phone, String address1, String address2, String address3) {
         this.email = email;
         this.password = password;
         this.name = name;
         this.phone = phone;
-        this.address = address;
+        this.address1 = address1;
+        this.address2 = address2;
+        this.address3 = address3;
     }
 
     @Builder
