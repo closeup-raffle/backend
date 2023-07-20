@@ -1,5 +1,7 @@
-package farmSystem.zerozeronbbang.domains;
+package farmSystem.zerozeronbbang.domains.menu;
 
+import farmSystem.zerozeronbbang.domains.MenuOption;
+import farmSystem.zerozeronbbang.domains.foodStore.FoodStore;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -20,10 +22,9 @@ public class Menu {
     private Long id;
 
     private String menuPhotoUrl;
-
     private int price;
+    private String title;
 
-    private String menuExplanation;
 // 카테고리는 좀더 고민해보자
 //    @OneToMany(mappedBy = "menu", cascade = CascadeType.ALL)
 //    private List<Menu_Category> menu_categories = new ArrayList<>();
@@ -38,9 +39,9 @@ public class Menu {
     private FoodStore foodStore;
 
     @Builder
-    public Menu(String menuPhotoUrl, String menuExplanation, int price){
+    public Menu(String menuPhotoUrl, String title, int price){
         this.menuPhotoUrl = menuPhotoUrl;
-        this.menuExplanation=menuExplanation;
+        this.title=title;
         this.price = price;
     }
 

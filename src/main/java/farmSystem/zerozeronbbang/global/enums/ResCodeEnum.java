@@ -15,7 +15,15 @@ public enum ResCodeEnum {
 
     // 주문 공고
     ORDERBOARD_LOAD_SUCCESS("Get OrderBoards Success"),
-    ORDERBOARD_WRITE_SUCCESS("Write OrderBoard Success")
+    ORDERBOARD_WRITE_SUCCESS("Write OrderBoard Success"),
+
+
+    //음식점
+    FOODSTORE_LOAD_SUCCESS("Get FoodStore Success"),
+
+    // 메뉴
+    MENU_LOAD_SUCCESS("Get Menu Success"),
+
     ;
 
     private String message;

@@ -1,5 +1,6 @@
-package farmSystem.zerozeronbbang.domains;
+package farmSystem.zerozeronbbang.domains.foodStore;
 
+import farmSystem.zerozeronbbang.domains.menu.Menu;
 import farmSystem.zerozeronbbang.domains.category.Category;
 import lombok.AccessLevel;
 import lombok.Builder;
