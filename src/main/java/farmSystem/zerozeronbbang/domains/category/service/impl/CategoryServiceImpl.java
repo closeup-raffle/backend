@@ -6,6 +6,7 @@ import farmSystem.zerozeronbbang.domains.category.repository.CategoryRepository;
 import farmSystem.zerozeronbbang.domains.category.service.CategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -17,6 +18,7 @@ public class CategoryServiceImpl implements CategoryService {
     private final CategoryRepository categoryRepository;
 
     @Override
+    @Transactional(readOnly = true)
     public List<ResFindCategoriseDto> findCategories() {
         List<Category> categories = categoryRepository.findAll();
         List<ResFindCategoriseDto> resFindCategoriseDtos = categories.stream()
