@@ -41,7 +41,6 @@ public class UserAuthTokenServiceImpl implements TokenService {
                 .claim("email", user.getEmail())
                 .claim("name", user.getName())
                 .claim("phone", user.getPhone())
-                .claim("address", user.getAddress())
                 .setIssuedAt(now)
                 .setExpiration(validity)
                 .signWith(SignatureAlgorithm.HS256, jwtSecret.getBytes(StandardCharsets.UTF_8))
@@ -104,8 +103,8 @@ public class UserAuthTokenServiceImpl implements TokenService {
                 Long.valueOf(claims.get("id").toString()),
                 claims.get("email").toString(),
                 claims.get("name").toString(),
-                claims.get("phone").toString(),
-                (Address) claims.get("address")
+                claims.get("phone").toString()
+//                (Address) claims.get("address")
         );
 
         return new UsernamePasswordAuthenticationToken(principal, accessToken, authorities);

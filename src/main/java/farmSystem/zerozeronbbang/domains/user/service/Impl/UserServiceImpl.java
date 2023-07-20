@@ -39,8 +39,9 @@ public class UserServiceImpl implements UserService {
         }
 
         User user = optionalUser.get();
-
-        if (!passwordEncoder.matches(password, user.getPassword())) {
+        // kakao 로그인의 경우 비밀번호 없음
+        if (user.getPassword() == null && password == null) {}
+        else if (!passwordEncoder.matches(password, user.getPassword())) {
             return null;
         }
 
