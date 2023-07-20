@@ -1,6 +1,5 @@
 package farmSystem.zerozeronbbang.domains.user.service.Impl;
 
-import farmSystem.zerozeronbbang.domains.user.Address;
 import farmSystem.zerozeronbbang.domains.user.User;
 import farmSystem.zerozeronbbang.domains.user.service.TokenService;
 import io.jsonwebtoken.*;
@@ -10,7 +9,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.nio.charset.StandardCharsets;
@@ -38,10 +36,6 @@ public class UserAuthTokenServiceImpl implements TokenService {
 
         return Jwts.builder()
                 .claim("id", user.getId())
-                .claim("email", user.getEmail())
-                .claim("name", user.getName())
-                .claim("phone", user.getPhone())
-                .claim("address", user.getAddress())
                 .setIssuedAt(now)
                 .setExpiration(validity)
                 .signWith(SignatureAlgorithm.HS256, jwtSecret.getBytes(StandardCharsets.UTF_8))
@@ -101,11 +95,7 @@ public class UserAuthTokenServiceImpl implements TokenService {
 
         // 디비를 거치지 않고 토큰에서 값을 꺼내 바로 시큐리티 유저 객체를 만들어 Authentication을 만들어 반환하기에 유저네임, 권한 외 정보는 알 수 없다.
         User principal = new User(
-                Long.valueOf(claims.get("id").toString()),
-                claims.get("email").toString(),
-                claims.get("name").toString(),
-                claims.get("phone").toString(),
-                (Address) claims.get("address")
+                Long.valueOf(claims.get("id").toString())
         );
 
         return new UsernamePasswordAuthenticationToken(principal, accessToken, authorities);
