@@ -40,8 +40,9 @@ public class UserServiceImpl implements UserService {
         }
 
         User user = optionalUser.get();
-
-        if (!passwordEncoder.matches(reqLoginDto.getPassword(), user.getPassword())) {
+        // kakao 로그인의 경우 비밀번호 없음
+        if (user.getPassword() == null && reqLoginDto.getPassword() == null) {}
+        else if (!passwordEncoder.matches(reqLoginDto.getPassword(), user.getPassword())) {
             throw new CustomException(ResCodeEnum.UNCORRECTED_PASSWORD);
         }
 
