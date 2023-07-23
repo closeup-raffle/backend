@@ -1,7 +1,6 @@
 package farmSystem.zerozeronbbang.domains.menu.service.impl;
 
 import farmSystem.zerozeronbbang.domains.menu.Menu;
-import farmSystem.zerozeronbbang.domains.menu.dto.ReqFindMenuDto;
 import farmSystem.zerozeronbbang.domains.menu.dto.ResFindMenuDto;
 import farmSystem.zerozeronbbang.domains.menu.repository.MenuRepository;
 import farmSystem.zerozeronbbang.domains.menu.service.MenuService;
@@ -22,9 +21,8 @@ public class MenuServiceImpl implements MenuService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<ResFindMenuDto> findMenus(ReqFindMenuDto reqFindMenuDto) {
-        log.info(reqFindMenuDto.getFoodStoreId().toString());
-        List<Menu> menus = menuRepository.findByFoodStoreId(reqFindMenuDto.getFoodStoreId());
+    public List<ResFindMenuDto> findMenus(Long foodStoreId) {
+        List<Menu> menus = menuRepository.findByFoodStoreId(foodStoreId);
 
         return menus.stream()
                 .map(menu -> ResFindMenuDto.builder()

@@ -1,6 +1,5 @@
 package farmSystem.zerozeronbbang.domains.user.dto;
 
-import farmSystem.zerozeronbbang.domains.user.Address;
 import lombok.Builder;
 import lombok.Data;
 

@@ -1,17 +1,17 @@
 package farmSystem.zerozeronbbang.domains.user.service.Impl;
 
 import farmSystem.zerozeronbbang.domains.user.User;
-import farmSystem.zerozeronbbang.domains.user.dto.AccessAndRefreshTokenDto;
-import farmSystem.zerozeronbbang.domains.user.dto.AccessTokenDto;
-import farmSystem.zerozeronbbang.domains.user.dto.ReqSignUpDto;
-import farmSystem.zerozeronbbang.domains.user.dto.ResLoginDto;
+import farmSystem.zerozeronbbang.domains.user.dto.*;
 import farmSystem.zerozeronbbang.domains.user.repository.UserRepository;
 import farmSystem.zerozeronbbang.domains.user.service.UserService;
+import farmSystem.zerozeronbbang.global.enums.ResCodeEnum;
+import farmSystem.zerozeronbbang.global.exception.CustomException;
 import farmSystem.zerozeronbbang.global.redis.RefreshToken;
 import farmSystem.zerozeronbbang.global.redis.RefreshTokenRedisRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -24,25 +24,26 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
     private final UserAuthTokenServiceImpl userAuthTokenService;
 
-    /**
-     * login
-     * @param email
-     * @param password
-     * @return
-     */
+//    /**
+//     * login
+//     * @param email
+//     * @param password
+//     * @return
+//     */
     @Override
-    public ResLoginDto login(String email, String password) {
-        Optional<User> optionalUser = userRepository.findUserByEmail(email);
+    @Transactional
+    public ResLoginDto login(ReqLoginDto reqLoginDto) {
+        Optional<User> optionalUser = userRepository.findUserByEmail(reqLoginDto.getEmail());
 
         if (optionalUser.isEmpty()) {
-            return null;
+            throw new CustomException(ResCodeEnum.UNCORRECTED_EMAIL);
         }
 
         User user = optionalUser.get();
         // kakao 로그인의 경우 비밀번호 없음
-        if (user.getPassword() == null && password == null) {}
-        else if (!passwordEncoder.matches(password, user.getPassword())) {
-            return null;
+        if (user.getPassword() == null && reqLoginDto.getPassword() == null) {}
+        else if (!passwordEncoder.matches(reqLoginDto.getPassword(), user.getPassword())) {
+            throw new CustomException(ResCodeEnum.UNCORRECTED_PASSWORD);
         }
 
         RefreshToken refreshToken = new RefreshToken(userAuthTokenService.createRefreshToken(), user.getId());
@@ -50,7 +51,7 @@ public class UserServiceImpl implements UserService {
         // Redis RefreshToken 저장
         refreshTokenRedisRepository.save(refreshToken);
 
-        return ResLoginDto.builder()
+        ResLoginDto resLoginDto = ResLoginDto.builder()
                 .id(user.getId())
                 .email(user.getEmail())
                 .name(user.getName())
@@ -60,15 +61,23 @@ public class UserServiceImpl implements UserService {
                 .address3(user.getAddress3())
                 .token(token)
                 .build();
+
+        return resLoginDto;
     }
 
     /**
      * sign up
+     *
      * @param reqSignUpDto
      * @return
      */
     @Override
-    public ReqSignUpDto signUp(ReqSignUpDto reqSignUpDto) {
+    @Transactional
+    public ResSignUpDto signUp(ReqSignUpDto reqSignUpDto) {
+
+        //아이디 중복 검사
+        validateDuplicatedUserEmail(reqSignUpDto.getEmail());
+
         String password = passwordEncoder.encode(reqSignUpDto.getPassword());
         User user = User.builder()
                 .email(reqSignUpDto.getEmail())
@@ -80,7 +89,20 @@ public class UserServiceImpl implements UserService {
                 .address3(reqSignUpDto.getAddress3())
                 .build();
         userRepository.save(user);
-        return reqSignUpDto;
+
+        ResSignUpDto resSignUpDto = ResSignUpDto.builder()
+                .id(user.getId())
+                .email(reqSignUpDto.getEmail())
+                .name(reqSignUpDto.getName())
+                .build();
+        return resSignUpDto;
+    }
+
+    private void validateDuplicatedUserEmail(String userEmail) {
+        Boolean existsByNickName = userRepository.existsByEmail(userEmail);
+        if (existsByNickName) {
+            throw new CustomException(ResCodeEnum.DUPLICATED_EMAIL);
+        }
     }
 
     @Override
