@@ -2,6 +2,8 @@ package farmSystem.zerozeronbbang.domains.user.service.Impl;
 
 import farmSystem.zerozeronbbang.domains.user.User;
 import farmSystem.zerozeronbbang.domains.user.service.TokenService;
+import farmSystem.zerozeronbbang.global.redis.UserRedis;
+import farmSystem.zerozeronbbang.global.redis.UserRedisRepository;
 import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -12,10 +14,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
 
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Date;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -27,7 +26,7 @@ public class UserAuthTokenServiceImpl implements TokenService {
     @Value("${token.jwt.ttl}")
     private int jwtExpirationTime;
 
-    protected static final String AUTHORITIES_KEY = "sub";
+    private final UserRedisRepository userRedisRepository;
 
     @Override
     public String createAccessToken(User user) {
@@ -93,11 +92,8 @@ public class UserAuthTokenServiceImpl implements TokenService {
                         .map(SimpleGrantedAuthority::new)
                         .collect(Collectors.toList());
 
-        // 디비를 거치지 않고 토큰에서 값을 꺼내 바로 시큐리티 유저 객체를 만들어 Authentication을 만들어 반환하기에 유저네임, 권한 외 정보는 알 수 없다.
-        User principal = new User(
-                Long.valueOf(claims.get("id").toString())
-        );
-
-        return new UsernamePasswordAuthenticationToken(principal, accessToken, authorities);
+        // redis에서 유저 정보 가져오기
+        Optional<UserRedis> userRedis = userRedisRepository.findById(claims.get("id").toString());
+        return new UsernamePasswordAuthenticationToken(userRedis.get(), accessToken, authorities);
     }
 }

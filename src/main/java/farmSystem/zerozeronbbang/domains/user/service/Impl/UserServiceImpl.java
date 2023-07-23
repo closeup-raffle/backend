@@ -8,6 +8,8 @@ import farmSystem.zerozeronbbang.global.enums.ResCodeEnum;
 import farmSystem.zerozeronbbang.global.exception.CustomException;
 import farmSystem.zerozeronbbang.global.redis.RefreshToken;
 import farmSystem.zerozeronbbang.global.redis.RefreshTokenRedisRepository;
+import farmSystem.zerozeronbbang.global.redis.UserRedis;
+import farmSystem.zerozeronbbang.global.redis.UserRedisRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -21,6 +23,7 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final RefreshTokenRedisRepository refreshTokenRedisRepository;
+    private final UserRedisRepository userRedisRepository;
     private final PasswordEncoder passwordEncoder;
     private final UserAuthTokenServiceImpl userAuthTokenService;
 
@@ -50,6 +53,10 @@ public class UserServiceImpl implements UserService {
         AccessAndRefreshTokenDto token = new AccessAndRefreshTokenDto(userAuthTokenService.createAccessToken(user), refreshToken.getRefreshToken());
         // Redis RefreshToken 저장
         refreshTokenRedisRepository.save(refreshToken);
+
+        // Redis user 저장
+        UserRedis userRedis = new UserRedis(user.getId(), user.getEmail(), user.getName(), user.getPhone(), user.getAddress1(), user.getAddress2(), user.getAddress3());
+        userRedisRepository.save(userRedis);
 
         ResLoginDto resLoginDto = ResLoginDto.builder()
                 .id(user.getId())

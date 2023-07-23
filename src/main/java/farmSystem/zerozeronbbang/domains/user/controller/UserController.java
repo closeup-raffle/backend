@@ -1,5 +1,6 @@
 package farmSystem.zerozeronbbang.domains.user.controller;
 
+import farmSystem.zerozeronbbang.domains.user.User;
 import farmSystem.zerozeronbbang.domains.user.dto.ReqLoginDto;
 import farmSystem.zerozeronbbang.domains.user.dto.ReqSignUpDto;
 import farmSystem.zerozeronbbang.domains.user.dto.ResLoginDto;
@@ -7,10 +8,12 @@ import farmSystem.zerozeronbbang.domains.user.dto.ResSignUpDto;
 import farmSystem.zerozeronbbang.domains.user.dto.ResOauthDto;
 import farmSystem.zerozeronbbang.domains.user.service.Impl.OauthKaKaoServiceImpl;
 import farmSystem.zerozeronbbang.domains.user.service.Impl.UserServiceImpl;
+import farmSystem.zerozeronbbang.global.redis.UserRedis;
 import farmSystem.zerozeronbbang.response.CustomResponseEntity;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -26,12 +29,12 @@ public class UserController {
     private final OauthKaKaoServiceImpl oauthKaKaoService;
 
     // GET
-//    @Operation(summary = "user 조회 TEST", description = "user login 컨트롤러")
-//    @GetMapping(value = "/test")
-//    public ResponseDto<?> test(@AuthenticationPrincipal User userAccount, String email) {
-//        System.out.println("TEST" + userAccount.getId() + userAccount.getName() + userAccount.getAddress());
-//        return ResponseUtil.SUCCESS(ResCodeEnum.USER_FIND_SUCCESS.getMessage(), userService.findUser(email));
-//    }
+    @Operation(summary = "user 조회 TEST", description = "user login 컨트롤러")
+    @GetMapping(value = "/test")
+    public void test(@AuthenticationPrincipal UserRedis userAccount, String email) {
+        System.out.println("TEST" + userAccount.getEmail());
+        // return ResponseUtil.SUCCESS(ResCodeEnum.USER_FIND_SUCCESS.getMessage(), userService.findUser(email));
+    }
 
     @ResponseBody
     @GetMapping("/login/kakao")

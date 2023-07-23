@@ -9,5 +9,5 @@ import lombok.Data;
 @AllArgsConstructor
 public class ResOauthDto {
     private ResLoginDto resLoginDto;
-    private ReqSignUpDto reqSignUpDto;
+    private ResOauthSignUp resOauthSignUp;
 }
