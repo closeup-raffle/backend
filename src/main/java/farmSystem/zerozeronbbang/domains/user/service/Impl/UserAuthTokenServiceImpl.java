@@ -36,6 +36,7 @@ public class UserAuthTokenServiceImpl implements TokenService {
 
         return Jwts.builder()
                 .claim("id", user.getId())
+                .claim("email", user.getEmail())
                 .setIssuedAt(now)
                 .setExpiration(validity)
                 .signWith(SignatureAlgorithm.HS256, jwtSecret.getBytes(StandardCharsets.UTF_8))
@@ -95,7 +96,8 @@ public class UserAuthTokenServiceImpl implements TokenService {
 
         // 디비를 거치지 않고 토큰에서 값을 꺼내 바로 시큐리티 유저 객체를 만들어 Authentication을 만들어 반환하기에 유저네임, 권한 외 정보는 알 수 없다.
         User principal = new User(
-                Long.valueOf(claims.get("id").toString())
+                Long.valueOf(claims.get("id").toString()),
+                claims.get("email").toString()
         );
 
         return new UsernamePasswordAuthenticationToken(principal, accessToken, authorities);
