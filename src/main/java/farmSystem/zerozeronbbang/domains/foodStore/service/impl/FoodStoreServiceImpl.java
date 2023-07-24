@@ -24,8 +24,8 @@ public class FoodStoreServiceImpl implements FoodStoreService {
     // 휴무일인지, 운영 시간인지 파악하는 로직 필요
     @Override
     @Transactional(readOnly = true)
-    public List<ResFindFoodStoreDto> findFoodStores(ReqFindFoodStoreDto reqFindFoodStoreDto) {
-        List<FoodStore> foodStores = foodStoreRepository.findByCategoryId(reqFindFoodStoreDto.getCategoryId());
+    public List<ResFindFoodStoreDto> findFoodStores(Long categoryId) {
+        List<FoodStore> foodStores = foodStoreRepository.findByCategoryId(categoryId);
         return foodStores.stream()
                 .map(foodStore -> ResFindFoodStoreDto.builder()
                         .id(foodStore.getId())
