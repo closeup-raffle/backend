@@ -6,5 +6,5 @@ import farmSystem.zerozeronbbang.domains.foodStore.dto.ResFindFoodStoreDto;
 import java.util.List;
 
 public interface FoodStoreService {
-    List<ResFindFoodStoreDto> findFoodStores(ReqFindFoodStoreDto reqFindFoodStoreDto);
+    List<ResFindFoodStoreDto> findFoodStores(Long categoryId);
 }
