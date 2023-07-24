@@ -4,6 +4,7 @@ import farmSystem.zerozeronbbang.domains.foodStore.FoodStore;
 import farmSystem.zerozeronbbang.domains.foodStore.repository.FoodStoreRepository;
 import farmSystem.zerozeronbbang.domains.orderBoard.OrderBoard;
 import farmSystem.zerozeronbbang.domains.orderBoard.dto.ReqWriteOrderBoardDto;
+import farmSystem.zerozeronbbang.domains.orderBoard.dto.ResFindOrderBoardDto;
 import farmSystem.zerozeronbbang.domains.orderBoard.dto.ResFindOrderBoardsDto;
 import farmSystem.zerozeronbbang.domains.orderBoard.repository.OrderBoardRepository;
 import farmSystem.zerozeronbbang.domains.user.User;
@@ -13,6 +14,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -29,9 +32,6 @@ public class OrderBoardServiceImpl implements OrderBoardService{
                         .id(orderBoard.getId())
                         .numOfRecruit(orderBoard.getNumOfRecruit())
                         .endTime(orderBoard.getEndTime())
-                        .address1(orderBoard.getAddress1())
-                        .address2(orderBoard.getAddress2())
-                        .address3(orderBoard.getAddress3())
                         .foodStoreName(orderBoard.getFoodStore().getName())
                         .deliveryTime(orderBoard.getFoodStore().getDeliveryTime())
                         .deliveryTip(orderBoard.getFoodStore().getDeliveryTip())
@@ -66,6 +66,24 @@ public class OrderBoardServiceImpl implements OrderBoardService{
 
         orderBoardRepository.save(orderBoard);
         return reqWriteOrderBoardDto;
+    }
+
+    @Override
+    public ResFindOrderBoardDto findOrderBoard(Long orderBoardId) {
+        OrderBoard orderBoard = orderBoardRepository.findById(orderBoardId).get();
+        return ResFindOrderBoardDto.builder()
+                .id(orderBoard.getId())
+                .endTime(orderBoard.getEndTime())
+                .numOfRecruit(orderBoard.getNumOfRecruit())
+                .createdAt(orderBoard.getCreatedAt())
+                .foodStoreName(orderBoard.getFoodStore().getName())
+                .minDeliveryPrice(orderBoard.getFoodStore().getMinDeliveryPrice())
+                .storePictureUrl(orderBoard.getFoodStore().getStorePictureUrl())
+                .completed(orderBoard.isCompleted())
+                .deliveryTip(orderBoard.getFoodStore().getDeliveryTip())
+                .deliveryTime(orderBoard.getFoodStore().getDeliveryTime())
+                .address1(orderBoard.getAddress1()).address2(orderBoard.getAddress2()).address3(orderBoard.getAddress3())
+                .build();
     }
 
 }
