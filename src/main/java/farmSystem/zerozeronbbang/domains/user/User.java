@@ -85,7 +85,8 @@ public class User extends BaseEntity {
     }
 
     @Builder
-    public User(Long id) {
+    public User(Long id, String email) {
         this.id = id;
+        this.email=email;
     }
 }
