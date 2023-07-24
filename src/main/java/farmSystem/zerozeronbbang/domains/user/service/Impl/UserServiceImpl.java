@@ -2,6 +2,10 @@ package farmSystem.zerozeronbbang.domains.user.service.Impl;
 
 import farmSystem.zerozeronbbang.domains.user.User;
 import farmSystem.zerozeronbbang.domains.user.dto.*;
+import farmSystem.zerozeronbbang.domains.user.dto.request.ReqLoginDto;
+import farmSystem.zerozeronbbang.domains.user.dto.request.ReqSignUpDto;
+import farmSystem.zerozeronbbang.domains.user.dto.response.ResLoginDto;
+import farmSystem.zerozeronbbang.domains.user.dto.response.ResSignUpDto;
 import farmSystem.zerozeronbbang.domains.user.repository.UserRepository;
 import farmSystem.zerozeronbbang.domains.user.service.UserService;
 import farmSystem.zerozeronbbang.global.enums.ResCodeEnum;
@@ -9,6 +13,7 @@ import farmSystem.zerozeronbbang.global.exception.CustomException;
 import farmSystem.zerozeronbbang.global.redis.RefreshToken;
 import farmSystem.zerozeronbbang.global.redis.RefreshTokenRedisRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,6 +22,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
@@ -89,7 +95,6 @@ public class UserServiceImpl implements UserService {
                 .address3(reqSignUpDto.getAddress3())
                 .build();
         userRepository.save(user);
-
         ResSignUpDto resSignUpDto = ResSignUpDto.builder()
                 .id(user.getId())
                 .email(reqSignUpDto.getEmail())
