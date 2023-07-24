@@ -12,15 +12,12 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+//주문 공고 전체 조회 응답
 public class ResFindOrderBoardsDto {
 
     private Long id;
     private String endTime;
     private int numOfRecruit;
-    //배달 수령 위치
-    private String address1;
-    private String address2;
-    private String address3;
     private boolean completed;
     private String foodStoreName;
     private String storePictureUrl;
