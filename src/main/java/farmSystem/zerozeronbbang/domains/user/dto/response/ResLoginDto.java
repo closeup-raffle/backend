@@ -1,5 +1,6 @@
-package farmSystem.zerozeronbbang.domains.user.dto;
+package farmSystem.zerozeronbbang.domains.user.dto.response;
 
+import farmSystem.zerozeronbbang.domains.user.dto.AccessAndRefreshTokenDto;
 import lombok.Builder;
 import lombok.Data;
 

@@ -1,4 +1,4 @@
-package farmSystem.zerozeronbbang.domains.user.dto;
+package farmSystem.zerozeronbbang.domains.user.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

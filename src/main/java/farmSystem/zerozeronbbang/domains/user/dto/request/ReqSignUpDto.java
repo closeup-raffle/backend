@@ -1,4 +1,4 @@
-package farmSystem.zerozeronbbang.domains.user.dto;
+package farmSystem.zerozeronbbang.domains.user.dto.request;
 
 import lombok.*;
 
@@ -8,6 +8,7 @@ import javax.validation.constraints.NotBlank;
 @Getter
 @AllArgsConstructor
 @Builder
+@Setter
 public class ReqSignUpDto {
 
     @NotBlank(message = "이메일은 필수입니다.")
