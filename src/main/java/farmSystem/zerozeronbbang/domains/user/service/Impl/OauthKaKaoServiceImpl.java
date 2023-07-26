@@ -5,6 +5,7 @@ import farmSystem.zerozeronbbang.domains.user.dto.ReqSignUpDto;
 import farmSystem.zerozeronbbang.domains.user.dto.ResOauthDto;
 import farmSystem.zerozeronbbang.domains.user.dto.ResOauthSignUp;
 import farmSystem.zerozeronbbang.domains.user.service.OauthService;
+import farmSystem.zerozeronbbang.global.exception.CustomException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
@@ -88,18 +89,18 @@ public class OauthKaKaoServiceImpl implements OauthService {
         // 로그인 시도
         ResOauthDto resOauthDto = new ResOauthDto(null, null);
         String id = String.valueOf((Long) infoResponse.get("id"));
-        resOauthDto.setResLoginDto(this.userService.login(new ReqLoginDto(id, null)));
-        if (resOauthDto.getResLoginDto() != null) {
-            return resOauthDto;
-        }
+        try{
+            resOauthDto.setResLoginDto(this.userService.login(new ReqLoginDto(id, null)));
+        } catch (CustomException e) {
+            String name = "";
 
+            // 닉네임 정보 담기
+            if (StringUtils.hasText(profileMap.get("nickname"))) {
+                name = profileMap.get("nickname");
+            }
 
-        // 회원 정보 만들기
-        resOauthDto.setResOauthSignUp(new ResOauthSignUp(null));
-
-        // 닉네임 정보 담기
-        if (StringUtils.hasText(profileMap.get("nickname"))) {
-            resOauthDto.getResLoginDto().setName(profileMap.get("nickname"));
+            // 회원 정보 만들기
+            resOauthDto.setResOauthSignUp(new ResOauthSignUp(id, name));
         }
 
         return resOauthDto;
